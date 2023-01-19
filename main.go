@@ -5,10 +5,17 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-
-	"github.com/swaggo/gin-swagger" // gin-swagger middleware
-	// swagger embed files
 )
+
+// @title           API calculator
+// @version         1.0
+// @description     Calculate sum and prod for two numbers
+
+// @contact.name   Chethan Suresh
+// @contact.email  chethan.suresh@sony.com
+
+// @host      43.88.80.127:8080
+// @BasePath  /
 
 type InputNumbers struct {
 	Num1 int `json:"num1"`
@@ -19,11 +26,20 @@ type Sum struct {
 	SumRet int `json:"sum"`
 }
 
-type Mul struct {
+type Prod struct {
 	MulRet int `json:"product"`
 }
 
-func add(w http.ResponseWriter, r *http.Request) {
+// Add godoc
+//
+// @Summary Add two numbers.
+// @Description Takes two numbers and finds the sum.
+// @Tags calc
+// @Produce json
+// @Param num1 body InputNumbers true "addends"
+// @Success 200 {object} Sum
+// @Router /add [post]
+func Add(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		fmt.Fprintf(w, "Addition API")
@@ -52,7 +68,16 @@ func add(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func mul(w http.ResponseWriter, r *http.Request) {
+// Mul godoc
+//
+// @Summary Products of two numbers
+// @Description Takes two numbers and finds the product
+// @Tags calc
+// @Produce json
+// @Param num1 body InputNumbers true "factors"
+// @Success 200 {object} Prod
+// @Router /mul [post]
+func Mul(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "GET":
@@ -67,7 +92,7 @@ func mul(w http.ResponseWriter, r *http.Request) {
 		}
 
 		mul := req.Num1 * req.Num2
-		retdata := &Mul{
+		retdata := &Prod{
 			MulRet: mul,
 		}
 
@@ -80,34 +105,13 @@ func mul(w http.ResponseWriter, r *http.Request) {
 	default:
 		fmt.Fprintf(w, "mul/ - Sorry, only GET and POST methods are supported.")
 	}
-
 }
 
 func main() {
+	http.HandleFunc("/add", Add)
+	http.HandleFunc("/mul", Mul)
 
-	r := gin.Default()
-
-	c := controller.NewController()
-
-	v1 := r.Group("/api/v1")
-	{
-		accounts := v1.Group("/accounts")
-		{
-			accounts.GET(":id", c.ShowAccount)
-			accounts.GET("", c.ListAccounts)
-			accounts.POST("", c.AddAccount)
-			accounts.DELETE(":id", c.DeleteAccount)
-			accounts.PATCH(":id", c.UpdateAccount)
-			accounts.POST(":id/images", c.UploadAccountImage)
-		}
-	}
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	r.Run(":8080")
-
-	http.HandleFunc("/add", add)
-	http.HandleFunc("/mul", mul)
-
-	fmt.Printf("Starting server for testing HTTP POST...\n")
+	fmt.Printf("Starting calc API server on port :8080...\n")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
 	}

@@ -10,22 +10,117 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "contact": {
+            "name": "Chethan Suresh",
+            "email": "chethan.suresh@sony.com"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
-    "paths": {}
+    "paths": {
+        "/add": {
+            "post": {
+                "description": "Takes two numbers and finds the sum.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "calc"
+                ],
+                "summary": "Add two numbers.",
+                "parameters": [
+                    {
+                        "description": "addends",
+                        "name": "num1",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.InputNumbers"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.Sum"
+                        }
+                    }
+                }
+            }
+        },
+        "/mul": {
+            "post": {
+                "description": "Takes two numbers and finds the product",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "calc"
+                ],
+                "summary": "Products of two numbers",
+                "parameters": [
+                    {
+                        "description": "factors",
+                        "name": "num1",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.InputNumbers"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.Prod"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "main.InputNumbers": {
+            "type": "object",
+            "properties": {
+                "num1": {
+                    "type": "integer"
+                },
+                "num2": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.Prod": {
+            "type": "object",
+            "properties": {
+                "product": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.Sum": {
+            "type": "object",
+            "properties": {
+                "sum": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
-	Host:             "",
-	BasePath:         "",
+	Version:          "1.0",
+	Host:             "43.88.80.127:8080",
+	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "API calculator",
+	Description:      "Calculate sum and prod for two numbers",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

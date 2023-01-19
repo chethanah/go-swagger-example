@@ -1,4 +1,69 @@
+basePath: /
+definitions:
+  main.InputNumbers:
+    properties:
+      num1:
+        type: integer
+      num2:
+        type: integer
+    type: object
+  main.Prod:
+    properties:
+      product:
+        type: integer
+    type: object
+  main.Sum:
+    properties:
+      sum:
+        type: integer
+    type: object
+host: 43.88.80.127:8080
 info:
-  contact: {}
-paths: {}
+  contact:
+    email: chethan.suresh@sony.com
+    name: Chethan Suresh
+  description: Calculate sum and prod for two numbers
+  title: API calculator
+  version: "1.0"
+paths:
+  /add:
+    post:
+      description: Takes two numbers and finds the sum.
+      parameters:
+      - description: addends
+        in: body
+        name: num1
+        required: true
+        schema:
+          $ref: '#/definitions/main.InputNumbers'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Sum'
+      summary: Add two numbers.
+      tags:
+      - calc
+  /mul:
+    post:
+      description: Takes two numbers and finds the product
+      parameters:
+      - description: factors
+        in: body
+        name: num1
+        required: true
+        schema:
+          $ref: '#/definitions/main.InputNumbers'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Prod'
+      summary: Products of two numbers
+      tags:
+      - calc
 swagger: "2.0"

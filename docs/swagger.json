@@ -1,7 +1,107 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "Calculate sum and prod for two numbers",
+        "title": "API calculator",
+        "contact": {
+            "name": "Chethan Suresh",
+            "email": "chethan.suresh@sony.com"
+        },
+        "version": "1.0"
     },
-    "paths": {}
+    "host": "43.88.80.127:8080",
+    "basePath": "/",
+    "paths": {
+        "/add": {
+            "post": {
+                "description": "Takes two numbers and finds the sum.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "calc"
+                ],
+                "summary": "Add two numbers.",
+                "parameters": [
+                    {
+                        "description": "addends",
+                        "name": "num1",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.InputNumbers"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.Sum"
+                        }
+                    }
+                }
+            }
+        },
+        "/mul": {
+            "post": {
+                "description": "Takes two numbers and finds the product",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "calc"
+                ],
+                "summary": "Products of two numbers",
+                "parameters": [
+                    {
+                        "description": "factors",
+                        "name": "num1",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.InputNumbers"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.Prod"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "main.InputNumbers": {
+            "type": "object",
+            "properties": {
+                "num1": {
+                    "type": "integer"
+                },
+                "num2": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.Prod": {
+            "type": "object",
+            "properties": {
+                "product": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.Sum": {
+            "type": "object",
+            "properties": {
+                "sum": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
 }
